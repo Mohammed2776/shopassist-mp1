@@ -1,4 +1,4 @@
-"""ShopAssist, served. YOU own this file. This is Session 23's PART 2, finished - compare it with yours.
+﻿"""ShopAssist, served. YOU own this file. This is Session 23's PART 2, finished - compare it with yours.
 
 Run locally (gateway running, .env present):   uv run uvicorn app.main:app --port 8000
 Run everything in Docker:                     docker compose up --build   (see README.md)
@@ -33,10 +33,15 @@ class ChatResponse(BaseModel):
 
 @app.get("/health")
 def health():
-    """TODO MP1-T5: also report the running configuration, so your demo (and an auditor) can see it:
-        "memory": memory.STRATEGY,   "keep_turns": memory.KEEP_TURNS,   "tools": sorted(TOOLS)
-    """
-    return {"status": "ok", "model": agent.MODEL, "gateway": agent.GATEWAY_URL}
+    """Report the running application and configuration."""
+    return {
+        "status": "ok",
+        "model": agent.MODEL,
+        "gateway": agent.GATEWAY_URL,
+        "memory": memory.STRATEGY,
+        "keep_turns": memory.KEEP_TURNS,
+        "tools": sorted(TOOLS),
+    }
 
 
 def build_messages(history: list, message: str) -> list:
@@ -72,3 +77,4 @@ def chat_stream(req: ChatRequest):
 @app.delete("/sessions/{session_id}")
 def forget(session_id: str):
     return {"deleted": SESSIONS.pop(session_id, None) is not None}
+
